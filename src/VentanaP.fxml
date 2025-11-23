@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="618.0" prefWidth="904.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<AnchorPane prefHeight="618.0" prefWidth="904.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <Button layoutX="176.0" layoutY="67.0" mnemonicParsing="false" style="-fx-background-color: FF5E5E;" text="Agregar" />
       <Button layoutX="408.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" style="-fx-background-color: FF5E5E;" text="Eliminar" />
