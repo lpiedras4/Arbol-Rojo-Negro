@@ -6,15 +6,14 @@ public ArbolRN (Node root){
 public void crearArbol (){
 
 }
-public void insertarNodo(T data){
+    public void insertarNodo(T data){
+
 
     }
     public  void eliminarNodo(T data){
 
     }
-    public void buscarNodo(T data){
 
-    }
     public  void rotarIzq(T data){
 
     }
