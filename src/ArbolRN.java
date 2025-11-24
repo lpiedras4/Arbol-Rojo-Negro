@@ -24,16 +24,16 @@ public void insertarNodo(T data){
     public  void rotarDer(T data){
 
     }
-    public Lista <T> preOrden (){
+    public Lista<T> preOrden (){
     return null;
     }
-    public Lista <T> entreOrden (){
+    public Lista<T> entreOrden (){
         return null;
     }
-    public Lista <T> posOrden (){
+    public Lista<T> posOrden (){
         return null;
     }
-    public Lista <T> aLoAncho (){
+    public Lista<T> aLoAncho (){
         return null;
     }
 }
