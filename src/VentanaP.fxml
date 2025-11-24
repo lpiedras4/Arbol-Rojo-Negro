@@ -3,11 +3,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="VentanaP">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControladorVentana">
    <children>
-      <Button layoutX="28.0" layoutY="67.0" mnemonicParsing="false" text="Agregar" />
-      <Button layoutX="110.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" text="Eliminar" />
-      <Button layoutX="184.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" text="Buscar" />
+      <Button fx:id="onAgregar" layoutX="28.0" layoutY="67.0" mnemonicParsing="false" text="Agregar" />
+      <Button fx:id="onEliminar" layoutX="110.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" text="Eliminar" />
+      <Button fx:id="onBuscar" layoutX="184.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" text="Buscar" />
+      <TextField fx:id="txtAgregar" layoutX="28.0" layoutY="30.0" prefHeight="26.0" prefWidth="59.0" />
+      <TextField fx:id="txtEliminar" layoutX="110.0" layoutY="30.0" prefHeight="26.0" prefWidth="59.0" />
+      <TextField layoutX="184.0" layoutY="30.0" prefHeight="26.0" prefWidth="59.0" />
+      <Pane layoutX="28.0" layoutY="120.0" prefHeight="257.0" prefWidth="546.0" />
    </children>
 </AnchorPane>

@@ -1,9 +1,12 @@
+import javafx.scene.Node;
+
 public class ArbolRN <T> {
 private Node root;
 public ArbolRN (Node root){
     this.root = root;
 }
-public void crearArbol (){
+
+    public void crearArbol (){
 
 }
 public void insertarNodo(T data){
