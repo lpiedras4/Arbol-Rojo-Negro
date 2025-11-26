@@ -116,13 +116,16 @@ public class ArbolRojoNegro {
         Nodo x;
         boolean colorOriginalY = y.color;
 
+        //z doesn't have a left child
         if (z.izquierdo == NIL) {
             x = z.derecho;
             transplantar(z, z.derecho);
-        } else if (z.derecho == NIL) {
+        } //z doesn't have a right child
+        else if (z.derecho == NIL) {
             x = z.izquierdo;
             transplantar(z, z.izquierdo);
-        } else {
+        } //z has both children
+        else {
             y = minimo(z.derecho);
             colorOriginalY = y.color;
             x = y.derecho;
@@ -141,9 +144,7 @@ public class ArbolRojoNegro {
             y.color = z.color;
         }
 
-        if (!colorOriginalY && x != NIL) {
-            arreglarEliminacion(x);
-        }
+        if (!colorOriginalY) { arreglarEliminacion(x); }
     }
 
     public void transplantar(Nodo u, Nodo v) {
@@ -157,7 +158,7 @@ public class ArbolRojoNegro {
 
         if (v != NIL) {
             v.padre = u.padre;
-        }
+        } v.padre = u.padre;
     }
 
     public Nodo minimo(Nodo nodo) {

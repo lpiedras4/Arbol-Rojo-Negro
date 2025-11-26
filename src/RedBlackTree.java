@@ -276,35 +276,35 @@ public class RedBlackTree<T extends Comparable<T>> {
         Node<T> x;
         boolean yOriginalColor = y.color;
 
-        if (z.left == NIL) {
+        if (z.left == NIL) { //sin hijo izquierdo -> reemplazamos por el derecho
             x = z.right;
             transplant(z, z.right);
-        } else if (z.right == NIL) {
+        } else if (z.right == NIL) { //sin hijo derecho -> reemplazamos por el izquierdo
             x = z.left;
             transplant(z, z.left);
-        } else {
+        } else { //sin hijos -> sustituimos por sucesor
             y = minimum(z.right);
             yOriginalColor = y.color;
             x = y.right;
-            if (y.parent == z) {
-                if (x != NIL) x.parent = y;
-            } else {
+            if (y.parent == z) { //mientras sea hijo de z, no importa que sea NULL o NIL
+                x.parent = y;
+            } else { //y es reemplazado por hijo derecho
                 transplant(y, y.right);
                 y.right = z.right;
                 y.right.parent = y;
             }
-            transplant(z, y);
+            transplant(z, y); //z reemplazado por y
             y.left = z.left;
             y.left.parent = y;
-            y.color = z.color;
+            y.color = z.color; //mantenemos el color de z
         }
 
-        if (!yOriginalColor) {
+        if (!yOriginalColor) { //si el nodo sucesor (o el eliminado) era negro, aseguramos que cumpla con las reglas
             deleteFixup(x);
         }
     }
 
-    private void transplant(Node<T> u, Node<T> v) {
+    private void transplant(Node<T> u, Node<T> v) { //reemplaza un subarbol por otro subarbol
         if (u.parent == NIL) root = v;
         else if (u == u.parent.left) u.parent.left = v;
         else u.parent.right = v;
@@ -316,7 +316,7 @@ public class RedBlackTree<T extends Comparable<T>> {
         return node;
     }
 
-    private void deleteFixup(Node<T> x) {
+    private void deleteFixup(Node<T> x) { //asegura cumplimeinto de propiedades
         while (x != root && x.esNegro()) {
             if (x == x.parent.left) {
                 Node<T> w = x.parent.right;
@@ -368,7 +368,7 @@ public class RedBlackTree<T extends Comparable<T>> {
                 }
             }
         }
-        x.color = false;
+        x.color = false; //x debe ser negro
     }
 
     /* ------------------------- POSICIONES PARA UI ------------------------- */
