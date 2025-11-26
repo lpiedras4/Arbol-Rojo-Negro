@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+public class Main {
     public static void main(String[] args) {
         ArbolRojoNegro arbol = new ArbolRojoNegro();
         Scanner scanner = new Scanner(System.in);
@@ -154,3 +155,4 @@ import java.util.Scanner;
 
         System.out.println("\n=== PRUEBA AUTOMATICA COMPLETADA ===");
     }
+}
