@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Main {
+public class PruebasConsola {
     public static void main(String[] args) {
         ArbolRojoNegro arbol = new ArbolRojoNegro();
         Scanner scanner = new Scanner(System.in);
@@ -59,7 +59,6 @@ public class Main {
 
         scanner.close();
     }
-
     private static void mostrarMenu() {
         System.out.println("\n=================================");
         System.out.println("           MENU PRINCIPAL");
