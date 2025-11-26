@@ -10,6 +10,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import jdk.jshell.EvalException;
 
+import java.awt.event.ActionEvent;
+
 public class ControladorVentana {
 
     @FXML private Pane lienzoArbol;
@@ -19,7 +21,7 @@ public class ControladorVentana {
     @FXML private Button agregarBtn;
     @FXML private Button eliminarBtn;
     @FXML private Button buscarBtn;
-        @FXML private Label lblTxtBuscar;
+    @FXML private Label lblTxtBuscar;
 
     // === AQUÍ VIVE EL ÁRBOL REAL ===
     private RedBlackTree<Integer> arbol = new RedBlackTree<>();
@@ -88,42 +90,57 @@ public class ControladorVentana {
     private void onEliminar() {
         try {
             int valor = Integer.parseInt(txtEliminar.getText());
-            arbol.eliminar(valor);
-            dibujarArbol();
+
+            boolean eliminado = arbol.eliminarM(valor); // usa tu función lógica
+
+            if (eliminado) {
+                dibujarArbol();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Eliminación exitosa");
+                alert.setHeaderText(null);
+                alert.setContentText("El valor " + valor + " fue eliminado del árbol.");
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("No encontrado");
+                alert.setHeaderText(null);
+                alert.setContentText("El valor " + valor + " NO existía en el árbol.");
+                alert.showAndWait();
+            }
+
             txtEliminar.clear();
+
         } catch (NumberFormatException e) {
-            System.out.println("Valor no válido");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Ingrese un número válido.");
+            alert.showAndWait();
         }
     }
+
 
     // ======================================================
     // BOTÓN: BUSCAR
     // ======================================================
     @FXML
     private void onBuscar() {
-        int valor = Integer.parseInt(txtBuscar.getText());
-        mostrarNodoBuscado(String.valueOf(valor));
+        int valorBuscado = Integer.parseInt(txtBuscar.getText());
 
-        try {
-            arbol.buscar(valor);
-            dibujarArbol();
-            System.out.println("Valor encontrado en el árbol: " + valor);
+        boolean encontrado = arbol.buscar(valorBuscado);
 
+        if (encontrado) { //buscar devuelve true que recibe el valor buscado
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Nodo buscado");
-            lblTxtBuscar.setText("Nodo encontrado en el árbol: " + valor);
-
-
-            txtBuscar.clear();
-        } catch (NumberFormatException e) {
-            lblTxtBuscar.setText("Valor " + valor + " no encontrado");
+            alert.setTitle("Búsqueda");
+            alert.setHeaderText(null);
+            alert.setContentText("El valor " + valorBuscado + " se encuentra en el árbol.");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Búsqueda");
+            alert.setHeaderText(null);
+            alert.setContentText("El valor " + valorBuscado + " no se encuentra en el árbol.");
+            alert.showAndWait();
         }
-    }
-
-    public void mostrarNodoBuscado(String n) {
-        lblTxtBuscar.setText("Nodo encontrado: " + n);
-        lblTxtBuscar.setVisible(true);
-        lblTxtBuscar.setOpacity(1);
-
     }
 }

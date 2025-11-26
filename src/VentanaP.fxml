@@ -16,12 +16,6 @@
          <font>
             <Font name="Segoe UI Bold" size="36.0" />
          </font></Label>
-      <Pane fx:id="lienzoArbol" layoutX="14.0" layoutY="100.0" prefHeight="444.0" prefWidth="882.0" style="-fx-background-color: FFFFFF;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="100.0">
-         <children>
-            <Label fx:id="lblTxtBuscar" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="117.0" text="...">
-               <font>
-                  <Font size="14.0" />
-               </font></Label>
-         </children></Pane>
+      <Pane fx:id="lienzoArbol" layoutX="14.0" layoutY="100.0" prefHeight="444.0" prefWidth="882.0" style="-fx-background-color: FFFFFF;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="100.0" />
    </children>
 </AnchorPane>

@@ -86,18 +86,23 @@ public class RedBlackTree<T extends Comparable<T>> {
     }
 
     // Elimina el primer nodo que coincida con value, devuelve true si se eliminó
-    public boolean eliminar(T value) {
-        Node<T> z = buscarNodo(value);
-        if (z == null || z == NIL) return false;
-        deleteNode(z);
-        return true;
+    private Node<T> eliminar(T value) {
+        Node<T> nodoEliminar = buscarNodo(value);
+        if (nodoEliminar == null || nodoEliminar == NIL) return null;
+
+        deleteNode(nodoEliminar);
+        return nodoEliminar;   // z es nodo eliminado
     }
 
-    // Busca y devuelve el valor (o null)
-    public T buscar(T value) {
-        Node<T> n = buscarNodo(value);
-        return (n == null || n == NIL) ? null : n.value;
+    public boolean eliminarM(T valor) {
+        Node<T> nodoEliminar = eliminar(valor);
+        return nodoEliminar != null;   // true
     }
+
+
+    // Busca y devuelve el valor (o null)
+
+
 
     /* ------------------------- RECORRIDOS ------------------------- */
     public List<T> inorder() {
@@ -199,13 +204,18 @@ public class RedBlackTree<T extends Comparable<T>> {
     }
 
     private Node<T> buscarNodo(T value) {
-        Node<T> cur = root;
-        while (cur != NIL) {
-            int cmp = value.compareTo(cur.value);
-            if (cmp == 0) return cur;
-            cur = (cmp < 0) ? cur.left : cur.right;
+        Node<T> actual = root;
+        while (actual != NIL) {
+            int nodoComp = value.compareTo(actual.value);
+            if (nodoComp == 0) return actual;
+            actual = (nodoComp < 0) ? actual.left : actual.right;
         }
         return null;
+    }
+
+    public boolean buscar(T valor) {
+        Node<T> nodoBus = buscarNodo(valor);
+        return nodoBus != null && nodoBus != NIL;
     }
 
     /* ------------------------- ROTACIONES ------------------------- */
