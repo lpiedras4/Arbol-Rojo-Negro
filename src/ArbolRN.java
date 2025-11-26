@@ -5,9 +5,7 @@ public class ArbolRN <T extends Comparable<T>> {
         this.root = root;
     }
 
-    public void crearArbol() {
 
-    }
 
     public void insertarNodo(T data) { //basic binary search tree insertion :3
         Node<T> nuevo = new Node<>(data);
