@@ -1,80 +1,129 @@
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
-import javafx.util.Duration;
-import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
-
-
-
-import java.awt.*;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
+import jdk.jshell.EvalException;
 
 public class ControladorVentana {
-    @FXML
-    private Pane pane;
-    @FXML
-    private TextField txtAgregar;
-    @FXML
-    private TextField txtEliminar;
-    @FXML
-    private TextField txtBuscar;
-    @FXML
-    private Button btnBuscar;
-    @FXML
-    private Button btnEliminar;
-    @FXML
-    private Button btnAgregar;
-    @FXML
-    private Shape cirucloNodo;
 
-    private ArbolRN arbolRN;
-    private Node root;
-    @FXML
-    private Text valorNodo;
+    @FXML private Pane lienzoArbol;
+    @FXML private TextField txtAgregar;
+    @FXML private TextField txtEliminar;
+    @FXML private TextField txtBuscar;
+    @FXML private Button agregarBtn;
+    @FXML private Button eliminarBtn;
+    @FXML private Button buscarBtn;
+        @FXML private Label lblTxtBuscar;
+
+    // === AQUÍ VIVE EL ÁRBOL REAL ===
+    private RedBlackTree<Integer> arbol = new RedBlackTree<>();
 
 
+    // ======================================================
+    // METODO PARA REDIBUJAR EL ÁRBOL EN EL PANE
+    // ======================================================
+    private void dibujarArbol() {
+        lienzoArbol.getChildren().clear();
 
-    @FXML
-    private void onAgregar(){
-        //Texto que se recibe en TextField
-        String valor = txtAgregar.getText();
-        //Crear círculo para el nodo
-        Circle nodo = new  Circle();
-        nodo.setRadius(5);
-        nodo.setRadius(50);
-        nodo.setCenterX(150);
-        nodo.setCenterY(150);
-        nodo.setFill(Color.BLACK);
-        nodo.setStroke(Color.WHITE);
-        nodo.setStrokeWidth(2);
+        var nodos = arbol.getNodeViews(70, 40);
 
-        //Texto para nodo
-        Text texto = new Text(valor);
-        texto.setX(150 - texto.getLayoutBounds().getWidth() / 2);
-        texto.setY(150 + texto.getLayoutBounds().getHeight() / 4);
-        texto.setFill(Color.BLACK);
+        // Primero dibujamos líneas padre–hijo
+        for (var nv : nodos) {
+            if (nv.parentIndex != -1) {
+                var padre = nodos.get(nv.parentIndex);
 
-        pane.getChildren().addAll(nodo, texto);
-        txtAgregar.clear();
+                Line line = new Line(
+                        padre.x, padre.y,
+                        nv.x, nv.y
+                );
 
+                line.setStroke(Color.BLACK);
+                line.setStrokeWidth(2);
+                lienzoArbol.getChildren().add(line);
+            }
+        }
+
+        // Luego los nodos (círculos + texto)
+        for (var nv : nodos) {
+
+            Circle c = new Circle(nv.x, nv.y, 18);
+            c.setStroke(Color.BLACK);
+            c.setStrokeWidth(2);
+
+            if (nv.red) c.setFill(Color.RED);
+            else c.setFill(Color.BLACK); ////////////////////////////////////////////
+
+            Text t = new Text(nv.x - 6, nv.y + 4, String.valueOf(nv.value));
+            t.setFill(Color.WHITE);
+
+            lienzoArbol.getChildren().addAll(c, t);
+        }
     }
 
+    // ======================================================
+    // BOTÓN: AGREGAR
+    // ======================================================
     @FXML
-    private void onEliminar(){
-
+    private void onAgregar() {
+        try {
+            int valor = Integer.parseInt(txtAgregar.getText());
+            arbol.insertar(valor);
+            dibujarArbol();
+            txtAgregar.clear();
+        } catch (NumberFormatException e) {
+            System.out.println("Valor no válido");
+        }
     }
 
+    // ======================================================
+    // BOTÓN: ELIMINAR
+    // ======================================================
     @FXML
-    private void onBuscar(){
-
+    private void onEliminar() {
+        try {
+            int valor = Integer.parseInt(txtEliminar.getText());
+            arbol.eliminar(valor);
+            dibujarArbol();
+            txtEliminar.clear();
+        } catch (NumberFormatException e) {
+            System.out.println("Valor no válido");
+        }
     }
 
+    // ======================================================
+    // BOTÓN: BUSCAR
+    // ======================================================
+    @FXML
+    private void onBuscar() {
+        int valor = Integer.parseInt(txtBuscar.getText());
+        mostrarNodoBuscado(String.valueOf(valor));
 
+        try {
+            arbol.buscar(valor);
+            dibujarArbol();
+            System.out.println("Valor encontrado en el árbol: " + valor);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Nodo buscado");
+            lblTxtBuscar.setText("Nodo encontrado en el árbol: " + valor);
+
+
+            txtBuscar.clear();
+        } catch (NumberFormatException e) {
+            lblTxtBuscar.setText("Valor " + valor + " no encontrado");
+        }
+    }
+
+    public void mostrarNodoBuscado(String n) {
+        lblTxtBuscar.setText("Nodo encontrado: " + n);
+        lblTxtBuscar.setVisible(true);
+        lblTxtBuscar.setOpacity(1);
+
+    }
 }

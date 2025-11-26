@@ -10,7 +10,7 @@ public class ArbolRN <T extends Comparable<T>> {
     }
 
     public void insertarNodo(T data) { //basic binary search tree insertion :3
-        Node<T> nuevo = new Node<>(data);
+        Node<T> nuevo = new Node<>(data, "rojo");
         if (root == null) { //si el arbol esta vacio, la raiz es negra
             nuevo.color = "NEGRO";
             root = nuevo;
