@@ -1,9 +1,23 @@
-import javax.swing.*;
-import java.awt.*;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class main {
-    public static void main(String[] args) {
-        VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
+import java.io.IOException;
 
+public class Main extends Application {
+
+    public void start(Stage stage) throws IOException{
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("VentanaP.fxml"));
+        Scene scene = new Scene (fxmlLoader.load());
+        stage.setTitle("Arbol Rojo-Negro");
+        stage.setScene(scene);
+        stage.show();
     }
+
+    public static void main(String[] args) {
+        launch();
+    }
+
 }
+
