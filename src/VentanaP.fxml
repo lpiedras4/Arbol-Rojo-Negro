@@ -4,23 +4,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="618.0" prefWidth="904.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<AnchorPane prefHeight="618.0" prefWidth="904.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
-      <Button layoutX="176.0" layoutY="67.0" mnemonicParsing="false" style="-fx-background-color: FF5E5E;" text="Agregar" />
-      <Button layoutX="408.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" style="-fx-background-color: FF5E5E;" text="Eliminar" />
-      <Button layoutX="645.0" layoutY="68.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" style="-fx-background-color: FF5E5E;" text="Buscar" />
-      <TextField layoutX="14.0" layoutY="67.0" />
-      <TextField layoutX="251.0" layoutY="67.0" />
-      <TextField layoutX="484.0" layoutY="68.0" />
+      <Button fx:id="agregarBtn" onAction="#handleAgregarBtn" layoutX="176.0" layoutY="67.0" mnemonicParsing="false" style="-fx-background-color: FF5E5E;" text="Agregar" />
+      <Button fx:id="eliminarBtn" onAction="#handleEliminarBtn" layoutX="408.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" style="-fx-background-color: FF5E5E;" text="Eliminar" />
+      <Button fx:id="buscarBtn" onAction="#handleBuscarBtn" layoutX="645.0" layoutY="68.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" style="-fx-background-color: FF5E5E;" text="Buscar" />
+      <TextField fx:id="agregarTF" layoutX="14.0" layoutY="67.0" />
+      <TextField fx:id="eliminarTF" layoutX="251.0" layoutY="67.0" />
+      <TextField fx:id="buscarTF" layoutX="484.0" layoutY="68.0" />
       <Label layoutX="277.0" layoutY="14.0" style="-fx-text-fill: FFFFFF;" text="Árbol Rojo Negro" textFill="WHITE">
          <font>
             <Font name="Segoe UI Bold" size="36.0" />
          </font></Label>
-      <Pane fx:id="lienzoArbol" layoutX="14.0" layoutY="100.0" prefHeight="444.0" prefWidth="882.0" style="-fx-background-color: FFFFFF;"
-            AnchorPane.topAnchor="100.0"
-            AnchorPane.leftAnchor="14.0"
-            AnchorPane.rightAnchor="14.0"
-            AnchorPane.bottomAnchor="20.0"
-      />
+      <Pane fx:id="lienzoArbol" layoutX="14.0" layoutY="100.0" prefHeight="444.0" prefWidth="882.0" style="-fx-background-color: FFFFFF;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="100.0" />
    </children>
 </AnchorPane>
