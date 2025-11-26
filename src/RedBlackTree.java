@@ -1,28 +1,15 @@
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Arbol Rojo-Negro genérico listo para integrarse con un controlador JavaFX.
- * - Soporta T extends Comparable<T>
- * - Usa un nodo NIL sentinel
- * - Inserción y eliminación completas
- * - Recorridos (pre/in/post) que devuelven listas
- * - Metodo getNodeViews() que devuelve nodos con coordenadas (x,y) y color
- *   útil para dibujar en un Pane/Canvas.
- *
- * Nota: el cálculo de posiciones es sencillo: x se asigna en orden (in-order)
- * y depende de un contador; y = profundidad * levelGap.
- */
 public class RedBlackTree<T extends Comparable<T>> {
 
-    /** Nodo interno genérico */
+    //Nodo generico
     public static class Node<T extends Comparable<T>> {
         T value;
         Node<T> left, right, parent;
-        boolean color; // true = RED, false = BLACK
+        boolean color; // true = Rojo, false = Negro
 
         // Para uso visual (se rellenan con computeNodePositions)
-        double x, y;
+        double x, y; //x y y se establecen para establecer las coordenadas que se usaran para dibujar el arbol.
 
         Node(T value) {
             this.value = value;
@@ -30,8 +17,8 @@ public class RedBlackTree<T extends Comparable<T>> {
             this.color = true; // nuevo nodo por defecto ROJO
         }
 
-        boolean isRed() { return color; }//color == true es ROJO
-        boolean isBlack() { return !color; } //color != true es NEGRO
+        boolean esRojo() { return color; }//color == true rojo
+        boolean esNegro() { return !color; } //color != true negro
     }
 
     // Clase que el controlador puede usar para dibujar
@@ -245,10 +232,10 @@ public class RedBlackTree<T extends Comparable<T>> {
 
     /* ------------------------- ARREGLAR INSERCION ------------------------- */
     private void insertFixup(Node<T> z) {
-        while (z.parent != NIL && z.parent.isRed()) {
+        while (z.parent != NIL && z.parent.esRojo()) {
             if (z.parent == z.parent.parent.left) {
                 Node<T> y = z.parent.parent.right;
-                if (y != NIL && y.isRed()) {
+                if (y != NIL && y.esRojo()) {
                     z.parent.color = false;
                     y.color = false;
                     z.parent.parent.color = true;
@@ -264,7 +251,7 @@ public class RedBlackTree<T extends Comparable<T>> {
                 }
             } else {
                 Node<T> y = z.parent.parent.left;
-                if (y != NIL && y.isRed()) {
+                if (y != NIL && y.esRojo()) {
                     z.parent.color = false;
                     y.color = false;
                     z.parent.parent.color = true;
@@ -330,20 +317,20 @@ public class RedBlackTree<T extends Comparable<T>> {
     }
 
     private void deleteFixup(Node<T> x) {
-        while (x != root && x.isBlack()) {
+        while (x != root && x.esNegro()) {
             if (x == x.parent.left) {
                 Node<T> w = x.parent.right;
-                if (w.isRed()) {
+                if (w.esRojo()) {
                     w.color = false;
                     x.parent.color = true;
                     leftRotate(x.parent);
                     w = x.parent.right;
                 }
-                if (w.left.isBlack() && w.right.isBlack()) {
+                if (w.left.esNegro() && w.right.esNegro()) {
                     w.color = true;
                     x = x.parent;
                 } else {
-                    if (w.right.isBlack()) {
+                    if (w.right.esNegro()) {
                         w.left.color = false;
                         w.color = true;
                         rightRotate(w);
@@ -357,17 +344,17 @@ public class RedBlackTree<T extends Comparable<T>> {
                 }
             } else {
                 Node<T> w = x.parent.left;
-                if (w.isRed()) {
+                if (w.esRojo()) {
                     w.color = false;
                     x.parent.color = true;
                     rightRotate(x.parent);
                     w = x.parent.left;
                 }
-                if (w.right.isBlack() && w.left.isBlack()) {
+                if (w.right.esNegro() && w.left.esNegro()) {
                     w.color = true;
                     x = x.parent;
                 } else {
-                    if (w.left.isBlack()) {
+                    if (w.left.esNegro()) {
                         w.right.color = false;
                         w.color = true;
                         leftRotate(w);

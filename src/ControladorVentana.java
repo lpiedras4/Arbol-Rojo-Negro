@@ -23,13 +23,11 @@ public class ControladorVentana {
     @FXML private Button buscarBtn;
     @FXML private Label lblTxtBuscar;
 
-    // === AQUÍ VIVE EL ÁRBOL REAL ===
+    //Se crea arbol/////////////////
     private RedBlackTree<Integer> arbol = new RedBlackTree<>();
 
 
-    // ======================================================
-    // METODO PARA REDIBUJAR EL ÁRBOL EN EL PANE
-    // ======================================================
+    /// Metodo para dibujar árbol//////////////
     private void dibujarArbol() {
         lienzoArbol.getChildren().clear();
 
