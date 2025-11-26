@@ -1,22 +1,7 @@
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import java.util.Scanner;
-import java.io.IOException;
 
-public class Main extends Application {
-
-    public void start(Stage stage) throws IOException{
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("VentanaP.fxml"));
-        Scene scene = new Scene (fxmlLoader.load());
-        stage.setTitle("Arbol Rojo-Negro");
-        stage.setScene(scene);
-        stage.show();
-    }
-
+public class PruebasConsola {
     public static void main(String[] args) {
-        launch();
         ArbolRojoNegro arbol = new ArbolRojoNegro();
         Scanner scanner = new Scanner(System.in);
         int opcion;
@@ -74,7 +59,6 @@ public class Main extends Application {
 
         scanner.close();
     }
-
     private static void mostrarMenu() {
         System.out.println("\n=================================");
         System.out.println("           MENU PRINCIPAL");
@@ -171,7 +155,3 @@ public class Main extends Application {
         System.out.println("\n=== PRUEBA AUTOMATICA COMPLETADA ===");
     }
 }
-
-
-
-

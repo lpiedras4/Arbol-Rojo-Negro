@@ -2,7 +2,7 @@ public class Cola <T>{
     Node frente = null;
     Node fondo = frente;
     Node adicionar(T data) {
-        Node node = new Node(data,"rojo");
+        Node node = new Node(data);
         if(frente==null){
             frente = node;
             fondo = node;

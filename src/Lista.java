@@ -27,7 +27,7 @@ public class Lista <T>{
     }
 
     public Node<T> insert(T data) {
-        Node newNode = new Node(data, "rojo");
+        Node newNode = new Node(data);
         newNode.next = null;
         if (this.head == null) {
             this.head = newNode;
