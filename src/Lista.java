@@ -1,4 +1,4 @@
-public class Lista <T>{
+public class Lista <T extends Comparable<T>>{
     private Node head = null;
 
     public T get(int index) {

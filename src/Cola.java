@@ -1,5 +1,5 @@
 
-public class Cola <T>{
+public class Cola <T extends Comparable<T>>{
     Node frente = null;
     Node fondo = frente;
     Node adicionar(T data) {
