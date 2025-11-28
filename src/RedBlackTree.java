@@ -1,46 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Arbol Rojo-Negro genérico listo para integrarse con un controlador JavaFX.
- * - Soporta T extends Comparable<T>
- * - Usa un nodo NIL sentinel
- * - Inserción y eliminación completas
- * - Recorridos (pre/in/post) que devuelven listas
- * - Metodo getNodeViews() que devuelve nodos con coordenadas (x,y) y color
- *   útil para dibujar en un Pane/Canvas.
- *
- * Nota: el cálculo de posiciones es sencillo: x se asigna en orden (in-order)
- * y depende de un contador; y = profundidad * levelGap.
- */
 public class RedBlackTree<T extends Comparable<T>> {
-
-    /** Nodo interno genérico */
-    public static class Node<T extends Comparable<T>> {
-        T value;
-        Node<T> left, right, parent;
-        boolean color; // true = RED, false = BLACK
-
-        // Para uso visual (se rellenan con computeNodePositions)
-        double x, y;
-
-        Node(T value) {
-            this.value = value;
-            this.left = this.right = this.parent = null;
-            this.color = true; // nuevo nodo por defecto ROJO
-        }
-
-        boolean isRed() { return color; }//color == true es ROJO
-        boolean isBlack() { return !color; } //color != true es NEGRO
-    }
-
-    // Clase que el controlador puede usar para dibujar
-    public static class NodeView<T> {
-        public T value;
-        public boolean red;
-        public double x, y;
-        public int parentIndex; // -1 = es raíz
-    }
 
     private final Node<T> NIL;
     private Node<T> root;
@@ -52,7 +12,6 @@ public class RedBlackTree<T extends Comparable<T>> {
         root = NIL;
     }
 
-    /* ------------------------- OPERACIONES PUBLICAS ------------------------- */
 
     public Node<T> getRoot() { return root == NIL ? null : root; }
 
@@ -86,20 +45,29 @@ public class RedBlackTree<T extends Comparable<T>> {
     }
 
     // Elimina el primer nodo que coincida con value, devuelve true si se eliminó
-    public boolean eliminar(T value) {
-        Node<T> z = buscarNodo(value);
-        if (z == null || z == NIL) return false;
-        deleteNode(z);
-        return true;
+    Node<T> eliminar(T value) {
+        Node<T> nodoEliminar = buscarNodo(value);
+        if (nodoEliminar == null || nodoEliminar == NIL) return null;
+
+        deleteNode(nodoEliminar);
+        return nodoEliminar;   // z es nodo eliminado
+    }
+
+    /*public boolean eliminarM(T valor) {
+        Node<T> nodoEliminar = eliminar(valor);
+        return nodoEliminar != null;   // true
+    }*/
+
+    public boolean eliminarM(T valor) {
+        Node<T> nodoEliminar = eliminar(valor);
+        return nodoEliminar != null;   // true
     }
 
     // Busca y devuelve el valor (o null)
-    public T buscar(T value) {
-        Node<T> n = buscarNodo(value);
-        return (n == null || n == NIL) ? null : n.value;
-    }
 
-    /* ------------------------- RECORRIDOS ------------------------- */
+
+
+    //Recorridos
     public List<T> inorder() {
         List<T> out = new ArrayList<>();
         inorderRec(root, out);
@@ -118,8 +86,7 @@ public class RedBlackTree<T extends Comparable<T>> {
         return out;
     }
 
-    /* ------------------------- UTILIDADES PARA LA UI ------------------------- */
-
+    //Utilidades para la gui
     /**
      * Devuelve una lista de NodeView con posiciones x,y (en píxeles) y color.
      * parentIndex indica el índice en esta lista del padre o null si es raíz.
@@ -172,11 +139,6 @@ public class RedBlackTree<T extends Comparable<T>> {
                 lista
         );
     }
-
-
-
-    /* ------------------------- IMPLEMENTACION PRIVADA ------------------------- */
-
     private void inorderRec(Node<T> node, List<T> out) {
         if (node == NIL) return;
         inorderRec(node.left, out);
@@ -199,16 +161,21 @@ public class RedBlackTree<T extends Comparable<T>> {
     }
 
     private Node<T> buscarNodo(T value) {
-        Node<T> cur = root;
-        while (cur != NIL) {
-            int cmp = value.compareTo(cur.value);
-            if (cmp == 0) return cur;
-            cur = (cmp < 0) ? cur.left : cur.right;
+        Node<T> actual = root;
+        while (actual != NIL) {
+            int nodoComp = value.compareTo(actual.value);
+            if (nodoComp == 0) return actual;
+            actual = (nodoComp < 0) ? actual.left : actual.right;
         }
         return null;
     }
 
-    /* ------------------------- ROTACIONES ------------------------- */
+    public boolean buscar(T valor) {
+        Node<T> nodoBus = buscarNodo(valor);
+        return nodoBus != null && nodoBus != NIL;
+    }
+
+    //Rotaciones
     private void leftRotate(Node<T> x) {
         Node<T> y = x.right;
         x.right = y.left;
@@ -235,10 +202,10 @@ public class RedBlackTree<T extends Comparable<T>> {
 
     /* ------------------------- ARREGLAR INSERCION ------------------------- */
     private void insertFixup(Node<T> z) {
-        while (z.parent != NIL && z.parent.isRed()) {
+        while (z.parent != NIL && z.parent.esRojo()) {
             if (z.parent == z.parent.parent.left) {
                 Node<T> y = z.parent.parent.right;
-                if (y != NIL && y.isRed()) {
+                if (y != NIL && y.esRojo()) {
                     z.parent.color = false;
                     y.color = false;
                     z.parent.parent.color = true;
@@ -254,7 +221,7 @@ public class RedBlackTree<T extends Comparable<T>> {
                 }
             } else {
                 Node<T> y = z.parent.parent.left;
-                if (y != NIL && y.isRed()) {
+                if (y != NIL && y.esRojo()) {
                     z.parent.color = false;
                     y.color = false;
                     z.parent.parent.color = true;
@@ -273,7 +240,7 @@ public class RedBlackTree<T extends Comparable<T>> {
         root.color = false;
     }
 
-    /* ------------------------- ELIMINACION ------------------------- */
+   //Eliminacion
     private void deleteNode(Node<T> z) {
         Node<T> y = z;
         Node<T> x;
@@ -320,20 +287,20 @@ public class RedBlackTree<T extends Comparable<T>> {
     }
 
     private void deleteFixup(Node<T> x) {
-        while (x != root && x.isBlack()) {
+        while (x != root && x.esNegro()) {
             if (x == x.parent.left) {
                 Node<T> w = x.parent.right;
-                if (w.isRed()) {
+                if (w.esRojo()) {
                     w.color = false;
                     x.parent.color = true;
                     leftRotate(x.parent);
                     w = x.parent.right;
                 }
-                if (w.left.isBlack() && w.right.isBlack()) {
+                if (w.left.esNegro() && w.right.esNegro()) {
                     w.color = true;
                     x = x.parent;
                 } else {
-                    if (w.right.isBlack()) {
+                    if (w.right.esNegro()) {
                         w.left.color = false;
                         w.color = true;
                         rightRotate(w);
@@ -347,17 +314,17 @@ public class RedBlackTree<T extends Comparable<T>> {
                 }
             } else {
                 Node<T> w = x.parent.left;
-                if (w.isRed()) {
+                if (w.esRojo()) {
                     w.color = false;
                     x.parent.color = true;
                     rightRotate(x.parent);
                     w = x.parent.left;
                 }
-                if (w.right.isBlack() && w.left.isBlack()) {
+                if (w.right.esNegro() && w.left.esNegro()) {
                     w.color = true;
                     x = x.parent;
                 } else {
-                    if (w.left.isBlack()) {
+                    if (w.left.esNegro()) {
                         w.right.color = false;
                         w.color = true;
                         leftRotate(w);
@@ -374,7 +341,7 @@ public class RedBlackTree<T extends Comparable<T>> {
         x.color = false;
     }
 
-    /* ------------------------- POSICIONES PARA UI ------------------------- */
+    //POSICIONES PARA UI
     // helper para asignar x por orden y y por profundidad
     private static class PosCounter {
         int count = 0;
@@ -398,5 +365,134 @@ public class RedBlackTree<T extends Comparable<T>> {
         out.add(node);
         collectNodesInOrder(node.right, out);
     }
+
+    //para eliminar
+    private void trasplantar(Node u, Node v) {
+        if (u.parent == null) {
+            root = v;
+        } else if (u == u.parent.left) {
+            u.parent.left = v;
+        } else {
+            u.parent.right = v;
+        }
+        if (v != null) {
+            v.parent = u.parent;
+        }
+    }
+
+    private Node minValue(Node n) {
+        while (n.left != null) n = n.left;
+        return n;
+    }
+
+    private Node buscarNodo(Node actual, T valor) {
+        while (actual != null) {
+            int cmp = valor.compareTo((T) actual.value);
+            if (cmp == 0) return actual;
+            actual = (cmp < 0) ? actual.left : actual.right;
+        }
+        return null;
+    }
+
+    private void eliminarNodo(Node<T> z) {
+        Node<T> y = z;
+        Node<T> x;
+        boolean yOriginalColor = y.color;
+
+        if (z.left == NIL) { //sin hijo izquierdo -> reemplazamos por el derecho
+            x = z.right;
+            transplant(z, z.right);
+        } else if (z.right == NIL) { //sin hijo derecho -> reemplazamos por el izquierdo
+            x = z.left;
+            transplant(z, z.left);
+        } else { //sin hijos -> sustituimos por sucesor
+            y = minimum(z.right);
+            yOriginalColor = y.color;
+            x = y.right;
+            if (y.parent == z) { //mientras sea hijo de z, no importa que sea NULL o NIL
+                x.parent = y;
+            } else { //y es reemplazado por hijo derecho
+                transplant(y, y.right);
+                y.right = z.right;
+                y.right.parent = y;
+            }
+            transplant(z, y); //z reemplazado por y
+            y.left = z.left;
+            y.left.parent = y;
+            y.color = z.color; //mantenemos el color de z
+        }
+
+        if (!yOriginalColor) { //si el nodo sucesor (o el eliminado) era negro, aseguramos que cumpla con las reglas
+            deleteFixup(x);
+        }
+    }
+
+    private void transplante(Node<T> u, Node<T> v) { //reemplaza un subarbol por otro subarbol
+        if (u.parent == NIL) root = v;
+        else if (u == u.parent.left) u.parent.left = v;
+        else u.parent.right = v;
+        v.parent = u.parent;
+    }
+
+    private Node<T> minimo(Node<T> node) {
+        while (node.left != NIL) node = node.left;
+        return node;
+    }
+
+    private void eliminarFixup(Node<T> x) { //asegura cumplimeinto de propiedades
+        while (x != root && x.esNegro()) {
+            if (x == x.parent.left) {
+                Node<T> w = x.parent.right;
+                if (w.esRojo()) {
+                    w.color = false;
+                    x.parent.color = true;
+                    leftRotate(x.parent);
+                    w = x.parent.right;
+                }
+                if (w.left.esNegro() && w.right.esNegro()) {
+                    w.color = true;
+                    x = x.parent;
+                } else {
+                    if (w.right.esNegro()) {
+                        w.left.color = false;
+                        w.color = true;
+                        rightRotate(w);
+                        w = x.parent.right;
+                    }
+                    w.color = x.parent.color;
+                    x.parent.color = false;
+                    w.right.color = false;
+                    leftRotate(x.parent);
+                    x = root;
+                }
+            } else {
+                Node<T> w = x.parent.left;
+                if (w.esRojo()) {
+                    w.color = false;
+                    x.parent.color = true;
+                    rightRotate(x.parent);
+                    w = x.parent.left;
+                }
+                if (w.right.esNegro() && w.left.esNegro()) {
+                    w.color = true;
+                    x = x.parent;
+                } else {
+                    if (w.left.esNegro()) {
+                        w.right.color = false;
+                        w.color = true;
+                        leftRotate(w);
+                        w = x.parent.left;
+                    }
+                    w.color = x.parent.color;
+                    x.parent.color = false;
+                    w.left.color = false;
+                    rightRotate(x.parent);
+                    x = root;
+                }
+            }
+        }
+        x.color = false; //x debe ser negro
+    }
+
 
 }

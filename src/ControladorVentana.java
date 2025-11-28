@@ -101,22 +101,22 @@ public class ControladorVentana {
     // ======================================================
     @FXML
     private void onBuscar() {
-        int valor = Integer.parseInt(txtBuscar.getText());
-        mostrarNodoBuscado(String.valueOf(valor));
+        int valorBuscado = Integer.parseInt(txtBuscar.getText());
 
-        try {
-            arbol.buscar(valor);
-            dibujarArbol();
-            System.out.println("Valor encontrado en el árbol: " + valor);
+        boolean encontrado = arbol.buscar(valorBuscado);
 
+        if (encontrado) { //buscar devuelve true que recibe el valor buscado
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Nodo buscado");
-            lblTxtBuscar.setText("Nodo encontrado en el árbol: " + valor);
-
-
-            txtBuscar.clear();
-        } catch (NumberFormatException e) {
-            lblTxtBuscar.setText("Valor " + valor + " no encontrado");
+            alert.setTitle("Búsqueda");
+            alert.setHeaderText(null);
+            alert.setContentText("El valor " + valorBuscado + " se encuentra en el árbol.");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Búsqueda");
+            alert.setHeaderText(null);
+            alert.setContentText("El valor " + valorBuscado + " no se encuentra en el árbol.");
+            alert.showAndWait();
         }
     }
 
