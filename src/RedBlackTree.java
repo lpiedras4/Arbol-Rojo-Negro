@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 public class RedBlackTree<T extends Comparable<T>> {
-
     private final Node<T> NIL;
     private Node<T> root;
 
@@ -11,8 +10,6 @@ public class RedBlackTree<T extends Comparable<T>> {
         NIL.left = NIL.right = NIL.parent = NIL;
         root = NIL;
     }
-
-
     public Node<T> getRoot() { return root == NIL ? null : root; }
 
     public boolean isEmpty() { return root == NIL; }
@@ -52,22 +49,11 @@ public class RedBlackTree<T extends Comparable<T>> {
         deleteNode(nodoEliminar);
         return nodoEliminar;   // z es nodo eliminado
     }
-
-    /*public boolean eliminarM(T valor) {
-        Node<T> nodoEliminar = eliminar(valor);
-        return nodoEliminar != null;   // true
-    }*/
-
     public boolean eliminarM(T valor) {
         Node<T> nodoEliminar = eliminar(valor);
         return nodoEliminar != null;   // true
     }
-
-    // Busca y devuelve el valor (o null)
-
-
-
-    //Recorridos
+//
     public List<T> inorder() {
         List<T> out = new ArrayList<>();
         inorderRec(root, out);
@@ -86,7 +72,8 @@ public class RedBlackTree<T extends Comparable<T>> {
         return out;
     }
 
-    //Utilidades para la gui
+    /* ------------------------- UTILIDADES PARA LA UI ------------------------- */
+
     /**
      * Devuelve una lista de NodeView con posiciones x,y (en píxeles) y color.
      * parentIndex indica el índice en esta lista del padre o null si es raíz.
@@ -174,8 +161,6 @@ public class RedBlackTree<T extends Comparable<T>> {
         Node<T> nodoBus = buscarNodo(valor);
         return nodoBus != null && nodoBus != NIL;
     }
-
-    //Rotaciones
     private void leftRotate(Node<T> x) {
         Node<T> y = x.right;
         x.right = y.left;
@@ -199,8 +184,6 @@ public class RedBlackTree<T extends Comparable<T>> {
         y.right = x;
         x.parent = y;
     }
-
-    /* ------------------------- ARREGLAR INSERCION ------------------------- */
     private void insertFixup(Node<T> z) {
         while (z.parent != NIL && z.parent.esRojo()) {
             if (z.parent == z.parent.parent.left) {
@@ -239,8 +222,6 @@ public class RedBlackTree<T extends Comparable<T>> {
         }
         root.color = false;
     }
-
-   //Eliminacion
     private void deleteNode(Node<T> z) {
         Node<T> y = z;
         Node<T> x;
@@ -341,7 +322,7 @@ public class RedBlackTree<T extends Comparable<T>> {
         x.color = false;
     }
 
-    //POSICIONES PARA UI
+    /* ------------------------- POSICIONES PARA UI ------------------------- */
     // helper para asignar x por orden y y por profundidad
     private static class PosCounter {
         int count = 0;
